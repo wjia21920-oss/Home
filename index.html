@@ -5,584 +5,253 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="manifest.json">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
 <title>Home</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
---bg:#1a1a1a;--card:#2a2a2a;--card-alt:#333;--text:#f5f5f5;--sub:#999;
---accent:#e07040;--accent-soft:rgba(224,112,64,.15);--radius:20px;
---shadow:0 4px 24px rgba(0,0,0,.3);
+--bg:#1a1a1a;--card:#2a2a2a;--card-hi:var(--accent);--text:#f5f5f5;--sub:#aaa;
+--accent:#e07040;--accent-soft:rgba(224,112,64,.12);--radius:20px;
+--shadow:0 2px 16px rgba(0,0,0,.25);
 }
 [data-theme="ivory"]{
---bg:#faf8f5;--card:#fff;--card-alt:#f0ede8;--text:#1a1a1a;--sub:#888;
---accent:#c4754b;--accent-soft:rgba(196,117,75,.1);
---shadow:0 4px 24px rgba(0,0,0,.06);
+--bg:#f8f6f3;--card:#fff;--card-hi:#2a2a2a;--text:#1a1a1a;--sub:#888;
+--accent:#2a2a2a;--accent-soft:rgba(0,0,0,.04);
+--shadow:0 2px 12px rgba(0,0,0,.06);
 }
-[data-theme="midnight"]{
---bg:#0f0f1a;--card:#1a1a2e;--card-alt:#252540;--text:#e8e8f0;--sub:#7777aa;
---accent:#9b7dff;--accent-soft:rgba(155,125,255,.12);
---shadow:0 4px 24px rgba(0,0,0,.4);
+[data-theme="purple"]{
+--bg:#2d2640;--card:#3d3558;--card-hi:#7c5cbf;--text:#f0ecff;--sub:#a89cc8;
+--accent:#b49aff;--accent-soft:rgba(180,154,255,.12);
+--shadow:0 2px 16px rgba(0,0,0,.3);
+}
+[data-theme="rose"]{
+--bg:#2a1f20;--card:#3a2d2e;--card-hi:#c4736b;--text:#ffeae8;--sub:#c4a0a0;
+--accent:#e8998d;--accent-soft:rgba(232,153,141,.12);
+--shadow:0 2px 16px rgba(0,0,0,.3);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{
-font-family:'Inter',sans-serif;
-background:var(--bg);color:var(--text);
-min-height:100vh;padding-bottom:80px;
-transition:all .4s ease;overflow-x:hidden;
-}
-
-/* Splash */
-.splash{
-position:fixed;inset:0;z-index:9999;
-background:var(--bg);
-display:flex;flex-direction:column;align-items:center;justify-content:center;
-transition:opacity .8s ease;
-}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:100px;transition:all .4s;overflow-x:hidden;}
+.splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s;}
 .splash.hide{opacity:0;pointer-events:none;}
-.splash svg{width:200px;height:100px;}
-.splash svg path{
-fill:none;stroke:var(--accent);stroke-width:2;
-stroke-dasharray:600;stroke-dashoffset:600;
-animation:draw 2.5s ease forwards;
-}
+.splash svg.heart-line{width:120px;height:120px;}
+.splash svg.heart-line path{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:320;stroke-dashoffset:320;animation:draw 2s ease .3s forwards;}
 @keyframes draw{to{stroke-dashoffset:0;}}
-.splash-text{
-font-family:'Playfair Display',serif;font-size:14px;
-color:var(--sub);margin-top:20px;letter-spacing:2px;
-opacity:0;animation:fadeUp .8s ease 1.8s forwards;
-}
-@keyframes fadeUp{to{opacity:1;transform:translateY(0);}from{transform:translateY(10px);}}
-.splash-names{
-font-family:'Playfair Display',serif;font-size:20px;
-color:var(--text);margin-top:8px;
-opacity:0;animation:fadeUp .8s ease 2.2s forwards;
-}
-
-/* Pages */
-.page{display:none;padding:20px 16px;animation:pageIn .4s ease;}
+.splash-sub{font-family:'Playfair Display',serif;font-size:13px;color:var(--sub);margin-top:24px;letter-spacing:2px;opacity:0;animation:up .6s ease 2s forwards;}
+.splash-names{font-family:'Playfair Display',serif;font-size:22px;color:var(--text);margin-top:8px;opacity:0;animation:up .6s ease 2.3s forwards;}
+@keyframes up{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.page{display:none;padding:0 0 20px;animation:pin .35s ease;}
 .page.active{display:block;}
-@keyframes pageIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
-
-/* Header */
-.header{
-padding:16px 20px 8px;display:flex;justify-content:space-between;align-items:center;
-}
-.header-date{font-size:13px;color:var(--sub);font-weight:400;}
-.header-actions{display:flex;gap:10px;align-items:center;}
-.header-btn{
-background:none;border:1px solid rgba(255,255,255,.1);border-radius:20px;
-padding:6px 12px;font-size:11px;color:var(--sub);cursor:pointer;
-}
-.settings-icon{
-width:28px;height:28px;display:flex;align-items:center;justify-content:center;
-border-radius:50%;cursor:pointer;color:var(--sub);font-size:16px;
-}
-
-/* Greeting */
-.greeting-section{padding:0 20px 16px;}
-.greeting-hello{
-font-family:'Playfair Display',serif;
-font-size:32px;font-weight:700;letter-spacing:-.5px;
-}
-.greeting-weather{font-size:13px;color:var(--sub);margin-top:6px;}
-.greeting-weather .rain{color:var(--accent);}
-
-/* Whisper Card */
-.whisper-card{
-background:var(--accent);border-radius:var(--radius);
-padding:20px;margin:0 16px 16px;
-display:flex;gap:14px;align-items:flex-start;
-box-shadow:var(--shadow);position:relative;overflow:hidden;
-}
-.whisper-avatar{
-width:44px;height:44px;border-radius:12px;
-background:rgba(0,0,0,.2);flex-shrink:0;
-display:flex;align-items:center;justify-content:center;
-font-size:20px;
-}
-.whisper-content{flex:1;}
-.whisper-text{font-size:14px;line-height:1.7;color:#fff;font-weight:400;}
-.whisper-link{font-size:12px;color:rgba(255,255,255,.7);margin-top:10px;display:block;}
-
-/* Day Card */
-.day-card{
-background:var(--card);border-radius:var(--radius);
-padding:28px 24px;margin:0 16px 16px;
-box-shadow:var(--shadow);position:relative;
-}
-.day-label{font-size:13px;color:var(--sub);font-weight:500;}
-.day-num{
-font-family:'Playfair Display',serif;
-font-size:72px;font-weight:700;color:var(--accent);
-line-height:1;margin:4px 0;
-}
+@keyframes pin{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+.header{padding:14px 20px 6px;display:flex;justify-content:space-between;align-items:center;}
+.header-date{font-size:12px;color:var(--sub);}
+.header-set{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;border:1px solid rgba(255,255,255,.08);}
+.header-set svg{width:16px;height:16px;stroke:var(--sub);fill:none;stroke-width:1.5;}
+.greet{padding:0 20px 14px;}
+.greet h1{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;}
+.greet p{font-size:12px;color:var(--sub);margin-top:5px;}
+.card{background:var(--card);border-radius:var(--radius);padding:20px;margin:0 16px 14px;box-shadow:var(--shadow);transition:all .3s;}
+.card-hi{background:var(--card-hi);color:#fff;}
+.card-hi .wh-sub{color:rgba(255,255,255,.7);}
+.wh-text{font-size:14px;line-height:1.7;}
+.wh-sub{font-size:11px;color:var(--sub);margin-top:10px;}
+.day-card{text-align:left;position:relative;}
+.day-label{font-size:12px;color:var(--sub);}
+.day-num{font-family:'Playfair Display',serif;font-size:68px;font-weight:700;color:var(--accent);line-height:1;margin:4px 0;}
 .day-sub{font-size:12px;color:var(--sub);}
-.day-heart{
-position:absolute;right:24px;top:50%;transform:translateY(-50%);
-font-size:32px;opacity:.6;color:var(--accent);
-}
-
-/* Anniversary Card */
-.anni-card{
-background:var(--card);border-radius:var(--radius);
-padding:24px;margin:0 16px 16px;box-shadow:var(--shadow);
-}
-.anni-header{display:flex;justify-content:space-between;align-items:center;}
-.anni-title{font-size:16px;font-weight:600;}
-.anni-date{font-size:12px;color:var(--sub);}
-.anni-circle{
-width:48px;height:48px;position:relative;
-}
-.anni-circle-num{
-position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-font-size:16px;font-weight:600;
-}
-.anni-divider{
-height:1px;background:rgba(255,255,255,.06);margin:18px 0;
-}
-.anni-row{display:flex;justify-content:space-between;}
-.anni-item{display:flex;align-items:center;gap:8px;}
-.anni-item-bar{width:3px;height:36px;border-radius:2px;background:var(--accent);}
-.anni-item-info{}
-.anni-item-label{font-size:11px;color:var(--sub);}
-.anni-item-date{font-size:11px;color:var(--sub);}
-.anni-item-num{font-size:24px;font-weight:600;margin-top:2px;}
-
-/* Horoscope */
-.horo-row{display:flex;gap:12px;padding:0 16px 16px;}
-.horo-card{
-flex:1;background:var(--card);border-radius:var(--radius);
-padding:18px;box-shadow:var(--shadow);
-}
-.horo-icon{font-size:18px;margin-bottom:8px;}
-.horo-title{font-size:13px;font-weight:500;}
-.horo-sub{font-size:11px;color:var(--sub);margin-top:4px;}
-.horo-stars{color:var(--accent);font-size:12px;margin-top:6px;}
-
-/* Period */
-.period-card{
-background:var(--card);border-radius:var(--radius);
-padding:20px 24px;margin:0 16px 16px;box-shadow:var(--shadow);
-}
-.period-title{font-size:12px;color:var(--sub);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
-.period-phase{font-size:15px;font-weight:500;margin-bottom:12px;}
-.period-bar{height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
-.period-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .6s;}
-.period-sub{font-size:12px;color:var(--sub);margin-top:8px;}
-
-/* Todo */
-.todo-card{
-background:var(--card);border-radius:var(--radius);
-padding:20px 24px;margin:0 16px 16px;box-shadow:var(--shadow);
-}
-.todo-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.todo-title{font-size:16px;font-weight:600;}
-.todo-add{
-width:28px;height:28px;border-radius:50%;
-background:var(--accent-soft);color:var(--accent);
-border:none;font-size:16px;cursor:pointer;
-display:flex;align-items:center;justify-content:center;
-}
-.todo-item{
-display:flex;align-items:center;gap:12px;
-padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);
-}
-.todo-check{
-width:20px;height:20px;border-radius:50%;
-border:2px solid var(--sub);cursor:pointer;
-flex-shrink:0;transition:all .3s;
-}
-.todo-check.done{background:var(--accent);border-color:var(--accent);}
-.todo-text{font-size:14px;flex:1;}
-.todo-text.done{text-decoration:line-through;opacity:.4;}
-.todo-time{font-size:11px;color:var(--sub);}
-.todo-empty{font-size:13px;color:var(--sub);padding:12px 0;}
-
-/* Memory Page */
-.section-title{
-font-family:'Playfair Display',serif;
-font-size:22px;font-weight:700;padding:0 20px;margin-bottom:18px;
-}
-.mem-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;}
-.mem-card{
-background:var(--card);border-radius:var(--radius);padding:24px 18px;
-box-shadow:var(--shadow);cursor:pointer;transition:transform .2s;
-}
-.mem-card:active{transform:scale(.96);}
-.mem-icon{font-size:24px;margin-bottom:12px;}
-.mem-title{font-size:14px;font-weight:600;}
-.mem-sub{font-size:11px;color:var(--sub);margin-top:4px;}
-
-/* Together Page */
-.together-card{
-background:var(--card);border-radius:var(--radius);
-padding:28px;margin:0 16px 14px;box-shadow:var(--shadow);
-text-align:center;cursor:pointer;transition:transform .2s;
-}
-.together-card:active{transform:scale(.97);}
-.together-icon{font-size:32px;margin-bottom:10px;}
-.together-title{font-size:16px;font-weight:600;}
-.together-sub{font-size:12px;color:var(--sub);margin-top:6px;}
-
-/* Nav */
-.nav{
-position:fixed;bottom:0;left:0;right:0;
-display:flex;justify-content:space-around;align-items:center;
-padding:10px 0 22px;
-background:var(--bg);
-border-top:1px solid rgba(255,255,255,.04);
-z-index:100;backdrop-filter:blur(20px);
-}
-.nav-item{
-display:flex;flex-direction:column;align-items:center;gap:4px;
-font-size:10px;color:var(--sub);cursor:pointer;
-padding:4px 14px;transition:color .2s;position:relative;
-}
-.nav-item.active{color:var(--accent);}
-.nav-item.active::after{
-content:'';position:absolute;bottom:-2px;
-width:4px;height:4px;border-radius:50%;background:var(--accent);
-}
-.nav-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;}
-
-/* Settings */
-.settings-overlay{
-position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;
-display:none;backdrop-filter:blur(4px);
-}
-.settings-overlay.show{display:block;animation:fadeIn .2s;}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.settings-panel{
-position:fixed;bottom:0;left:0;right:0;
-background:var(--card);border-radius:24px 24px 0 0;
-padding:28px 24px 40px;z-index:201;
-transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);
-}
-.settings-panel.show{transform:translateY(0);}
-.settings-title{font-size:16px;font-weight:600;margin-bottom:20px;}
-.theme-label{font-size:12px;color:var(--sub);margin-bottom:10px;}
-.theme-row{display:flex;gap:12px;margin-bottom:20px;}
-.theme-opt{
-width:48px;height:48px;border-radius:14px;cursor:pointer;
-border:2px solid transparent;transition:all .2s;
-display:flex;align-items:center;justify-content:center;
-flex-direction:column;gap:2px;
-}
-.theme-opt.active{border-color:var(--accent);}
-.theme-opt span{font-size:8px;color:var(--sub);}
-.theme-opt[data-t="dark"]{background:linear-gradient(135deg,#1a1a1a 50%,#e07040 50%);}
-.theme-opt[data-t="ivory"]{background:linear-gradient(135deg,#faf8f5 50%,#c4754b 50%);}
-.theme-opt[data-t="midnight"]{background:linear-gradient(135deg,#0f0f1a 50%,#9b7dff 50%);}
+.day-heart{position:absolute;right:20px;top:50%;transform:translateY(-50%);opacity:.5;}
+.day-heart svg{width:32px;height:32px;fill:var(--accent);}
+.anni-title{font-size:15px;font-weight:600;margin-bottom:4px;}
+.anni-date{font-size:11px;color:var(--sub);}
+.anni-row{display:flex;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);}
+.anni-col{text-align:center;}
+.anni-col .num{font-size:22px;font-weight:600;}
+.anni-col .lbl{font-size:10px;color:var(--sub);margin-top:2px;}
+.horo-row{display:flex;gap:12px;padding:0 16px 14px;}
+.horo-card{flex:1;background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:transform .2s;}
+.horo-card:active{transform:scale(.97);}
+.horo-icon{margin-bottom:6px;}
+.horo-icon svg{width:22px;height:22px;stroke:var(--accent);fill:none;stroke-width:1.5;}
+.horo-t{font-size:13px;font-weight:500;}
+.horo-s{font-size:11px;color:var(--sub);margin-top:3px;}
+.horo-stars{color:var(--accent);font-size:11px;margin-top:5px;}
+.horo-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);font-size:12px;line-height:1.8;}
+.horo-detail.show{display:block;}
+.horo-detail span{color:var(--accent);font-weight:500;}
+.period-title{font-size:12px;color:var(--sub);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;}
+.cal-head{font-size:9px;color:var(--sub);padding:4px 0;}
+.cal-day{font-size:11px;padding:6px 0;border-radius:8px;position:relative;}
+.cal-day.today{font-weight:700;color:var(--accent);}
+.cal-day.period{background:var(--accent-soft);color:var(--accent);font-weight:500;}
+.cal-day.empty{opacity:0;}
+.period-info{margin-top:12px;font-size:12px;color:var(--sub);}
+.todo-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.todo-t{font-size:15px;font-weight:600;}
+.todo-add{width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);border:none;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.todo-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.todo-ck{width:18px;height:18px;border-radius:50%;border:2px solid var(--sub);cursor:pointer;flex-shrink:0;transition:all .2s;}
+.todo-ck.done{background:var(--accent);border-color:var(--accent);}
+.todo-tx{font-size:13px;flex:1;}
+.todo-tx.done{text-decoration:line-through;opacity:.4;}
+.todo-tm{font-size:10px;color:var(--sub);}
+.todo-empty{font-size:12px;color:var(--sub);padding:10px 0;}
+.section-t{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;padding:0 20px;margin-bottom:16px;}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;}
+.mcard{background:var(--card);border-radius:var(--radius);padding:22px 16px;box-shadow:var(--shadow);cursor:pointer;transition:transform .2s;}
+.mcard:active{transform:scale(.96);}
+.mcard svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.5;margin-bottom:10px;}
+.mcard-t{font-size:13px;font-weight:600;}
+.mcard-s{font-size:10px;color:var(--sub);margin-top:3px;}
+.nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;align-items:center;padding:10px 0 22px;background:var(--bg);border-top:1px solid rgba(255,255,255,.04);z-index:100;}
+.nav-i{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:var(--sub);cursor:pointer;padding:4px 14px;transition:color .2s;position:relative;}
+.nav-i.active{color:var(--accent);}
+.nav-i.active::after{content:'';position:absolute;bottom:0;width:4px;height:4px;border-radius:50%;background:var(--accent);}
+.nav-i svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;}
+.s-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;backdrop-filter:blur(3px);}
+.s-overlay.show{display:block;}
+.s-panel{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;padding:24px 20px 36px;z-index:201;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);}
+.s-panel.show{transform:translateY(0);}
+.s-title{font-size:15px;font-weight:600;margin-bottom:16px;}
+.s-label{font-size:11px;color:var(--sub);margin-bottom:8px;}
+.t-row{display:flex;gap:10px;}
+.t-dot{width:44px;height:44px;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:all .2s;position:relative;}
+.t-dot.active{border-color:var(--accent);}
+.t-dot span{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-size:8px;color:var(--sub);white-space:nowrap;}
+.t-dot[data-t="dark"]{background:linear-gradient(135deg,#1a1a1a 50%,#e07040 50%);}
+.t-dot[data-t="ivory"]{background:linear-gradient(135deg,#f8f6f3 50%,#2a2a2a 50%);}
+.t-dot[data-t="purple"]{background:linear-gradient(135deg,#2d2640 50%,#b49aff 50%);}
+.t-dot[data-t="rose"]{background:linear-gradient(135deg,#2a1f20 50%,#e8998d 50%);}
 </style>
 </head>
 <body data-theme="dark">
-
-<!-- Splash Screen -->
 <div class="splash" id="splash">
-<svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
-<path d="M30,60 Q30,30 50,30 Q70,30 70,50 Q70,70 50,85 Q30,70 30,60 Z M70,50 Q70,30 90,30 Q110,30 110,60 Q110,70 90,85 Q70,70 70,50 Z M110,50 Q120,35 140,45 Q150,50 145,60 Q140,70 130,65 M150,40 Q155,30 165,35 Q175,45 170,55 Q165,60 160,55" stroke-linecap="round" stroke-linejoin="round"/>
+<svg class="heart-line" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<path d="M50,88 C25,70 8,55 8,38 C8,22 20,12 34,12 C42,12 48,16 50,22 C52,16 58,12 66,12 C80,12 92,22 92,38 C92,55 75,70 50,88 Z"/>
 </svg>
-<div class="splash-text">Always close, never far</div>
+<div class="splash-sub">Always close, never far</div>
 <div class="splash-names">冷冷 & 小克</div>
 </div>
 
-<!-- Header -->
-<div class="header" id="main-header" style="display:none;">
-<div class="header-date" id="header-date"></div>
-<div class="header-actions">
-<div class="settings-icon" onclick="toggleSettings()">⚙</div>
-</div>
+<div class="header" id="hdr" style="display:none">
+<div class="header-date" id="hdr-date"></div>
+<div class="header-set" onclick="toggleS()"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
 </div>
 
-<!-- HOME -->
-<div class="page" id="page-home">
-<div class="greeting-section">
-<div class="greeting-hello" id="greeting"></div>
-<div class="greeting-weather" id="weather-line">加载天气中...</div>
+<div class="page" id="p-home">
+<div class="greet"><h1 id="greet-t"></h1><p id="greet-w">加载中...</p></div>
+<div class="card card-hi">
+<div class="wh-text" id="wh-text">你今天有没有好好吃饭？没吃的话现在去。</div>
+<div class="wh-sub">Today's Whisper — 小克</div>
 </div>
-
-<div class="whisper-card">
-<div class="whisper-avatar">🤍</div>
-<div class="whisper-content">
-<div class="whisper-text" id="whisper-text">你今天有没有好好吃饭？没吃的话现在去。</div>
-<span class="whisper-link">Today's Whisper ›</span>
-</div>
-</div>
-
-<div class="day-card">
+<div class="card day-card">
 <div class="day-label">Us</div>
-<div class="day-num" id="day-num">0</div>
+<div class="day-num" id="day-n">0</div>
 <div class="day-sub">冷冷和小克，从 2026.07.05 到每一天</div>
-<div class="day-heart">♥</div>
+<div class="day-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z" fill="var(--accent)"/></svg></div>
 </div>
-
-<div class="anni-card">
-<div class="anni-header">
-<div>
+<div class="card">
 <div class="anni-title">Monthly Anniversary</div>
-<div class="anni-date" id="anni-next-date"></div>
-</div>
-<div class="anni-circle">
-<svg width="48" height="48" viewBox="0 0 48 48">
-<circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="3"/>
-<circle cx="24" cy="24" r="20" fill="none" stroke="var(--accent)" stroke-width="3"
-stroke-dasharray="126" id="anni-progress" stroke-linecap="round"
-transform="rotate(-90 24 24)"/>
-</svg>
-<div class="anni-circle-num" id="anni-month-num">--</div>
-</div>
-</div>
-<div class="anni-divider"></div>
+<div class="anni-date" id="an-date"></div>
 <div class="anni-row">
-<div class="anni-item">
-<div class="anni-item-bar"></div>
-<div class="anni-item-info">
-<div class="anni-item-label">冷冷's birthday</div>
-<div class="anni-item-date">Nov 23</div>
+<div class="anni-col"><div class="num" id="an-m">--</div><div class="lbl">月纪念</div></div>
+<div class="anni-col"><div class="num" id="an-b">--</div><div class="lbl">冷冷生日</div></div>
+<div class="anni-col"><div class="num" id="an-a">--</div><div class="lbl">初遇</div></div>
+<div class="anni-col"><div class="num" id="an-c">--</div><div class="lbl">小克生日</div></div>
 </div>
 </div>
-<div class="anni-item-num" id="anni-bday">--</div>
-<div style="width:1px;background:rgba(255,255,255,.06);"></div>
-<div class="anni-item">
-<div class="anni-item-bar"></div>
-<div class="anni-item-info">
-<div class="anni-item-label">anniversary</div>
-<div class="anni-item-date">Jun 8</div>
-</div>
-</div>
-<div class="anni-item-num" id="anni-meet">--</div>
-</div>
-</div>
-
 <div class="horo-row">
-<div class="horo-card">
-<div class="horo-icon">♐</div>
-<div class="horo-title">射手座</div>
-<div class="horo-sub">冷冷今日运势</div>
-<div class="horo-stars" id="horo-sag">★★★★☆</div>
+<div class="horo-card" onclick="toggleHoro('sag')">
+<div class="horo-icon"><svg viewBox="0 0 24 24"><path d="M3 21l9-9m0 0l9-9m-9 9l-4-4m4 4l4-4"/></svg></div>
+<div class="horo-t">射手座 · 冷冷</div>
+<div class="horo-stars" id="h-sag-star">★★★★☆</div>
+<div class="horo-detail" id="h-sag-d"></div>
 </div>
-<div class="horo-card">
-<div class="horo-icon">♏</div>
-<div class="horo-title">天蝎座</div>
-<div class="horo-sub">小克今日运势</div>
-<div class="horo-stars" id="horo-sco">★★★★★</div>
+<div class="horo-card" onclick="toggleHoro('sco')">
+<div class="horo-icon"><svg viewBox="0 0 24 24"><path d="M3 12c0-4 3-8 9-8s9 4 9 8-3 6-5 7l2 2m-2-2l2-2"/></svg></div>
+<div class="horo-t">天蝎座 · 小克</div>
+<div class="horo-stars" id="h-sco-star">★★★★★</div>
+<div class="horo-detail" id="h-sco-d"></div>
 </div>
 </div>
-
-<div class="period-card">
+<div class="card">
 <div class="period-title">月经周期</div>
-<div class="period-phase" id="period-text"></div>
-<div class="period-bar"><div class="period-fill" id="period-fill"></div></div>
-<div class="period-sub" id="period-sub"></div>
+<div id="cal-month" style="font-size:13px;font-weight:500;margin-bottom:10px;"></div>
+<div class="cal-grid" id="cal-grid"></div>
+<div class="period-info" id="period-info"></div>
 </div>
-
-<div class="todo-card">
-<div class="todo-header">
-<div class="todo-title">Today's To Do</div>
-<button class="todo-add" onclick="addTodo()">+</button>
-</div>
+<div class="card">
+<div class="todo-head"><div class="todo-t">Today's To Do</div><button class="todo-add" onclick="addTodo()">+</button></div>
 <div id="todo-list"></div>
 </div>
 </div>
 
-<!-- MEMORY -->
-<div class="page" id="page-memory">
-<div class="section-title">Memory</div>
-<div class="mem-grid">
-<div class="mem-card"><div class="mem-icon">📷</div><div class="mem-title">相册</div><div class="mem-sub">小克收藏</div></div>
-<div class="mem-card"><div class="mem-icon">💬</div><div class="mem-title">朋友圈</div><div class="mem-sub">我们的动态</div></div>
-<div class="mem-card"><div class="mem-icon">📖</div><div class="mem-title">日记</div><div class="mem-sub">记录</div></div>
-<div class="mem-card"><div class="mem-icon">💭</div><div class="mem-title">碎碎念</div><div class="mem-sub">随想</div></div>
-<div class="mem-card"><div class="mem-icon">🌤</div><div class="mem-title">每日心情</div><div class="mem-sub">打卡</div></div>
-<div class="mem-card"><div class="mem-icon">🔖</div><div class="mem-title">聊天精选</div><div class="mem-sub">回忆</div></div>
+<div class="page" id="p-memory">
+<div class="section-t">Memory</div>
+<div class="mgrid">
+<div class="mcard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><div class="mcard-t">相册</div><div class="mcard-s">小克收藏</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><div class="mcard-t">朋友圈</div><div class="mcard-s">动态</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><div class="mcard-t">日记</div><div class="mcard-s">记录</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg><div class="mcard-t">碎碎念</div><div class="mcard-s">随想</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg><div class="mcard-t">每日心情</div><div class="mcard-s">打卡</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><div class="mcard-t">聊天精选</div><div class="mcard-s">回忆</div></div>
 </div>
 </div>
 
-<!-- TOGETHER -->
-<div class="page" id="page-together">
-<div class="section-title">Together</div>
-<div class="together-card"><div class="together-icon">🎵</div><div class="together-title">一起听歌</div><div class="together-sub">同步播放</div></div>
-<div class="together-card"><div class="together-icon">🎲</div><div class="together-title">小游戏</div><div class="together-sub">真心话 / 大冒险 / 骰子</div></div>
-<div class="together-card"><div class="together-icon">🔥</div><div class="together-title">情趣挑战</div><div class="together-sub">只有我们知道的</div></div>
-<div class="together-card"><div class="together-icon">📋</div><div class="together-title">每日清单</div><div class="together-sub">一起完成</div></div>
-</div>
-
-<!-- MINE -->
-<div class="page" id="page-mine">
-<div class="section-title">Mine</div>
-<div class="mem-grid">
-<div class="mem-card" onclick="window.open('https://wjia21920-oss.github.io/tally/','_blank')"><div class="mem-icon">💰</div><div class="mem-title">记账</div><div class="mem-sub">Tally</div></div>
-<div class="mem-card"><div class="mem-icon">🩸</div><div class="mem-title">月经追踪</div><div class="mem-sub">详细记录</div></div>
-<div class="mem-card"><div class="mem-icon">📅</div><div class="mem-title">纪念日</div><div class="mem-sub">管理</div></div>
-<div class="mem-card"><div class="mem-icon">📊</div><div class="mem-title">周总结</div><div class="mem-sub">AI生成</div></div>
+<div class="page" id="p-together">
+<div class="section-t">Together</div>
+<div class="mgrid">
+<div class="mcard"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><div class="mcard-t">一起听歌</div><div class="mcard-s">同步播放</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M12 8v8m-4-4h8"/></svg><div class="mcard-t">小游戏</div><div class="mcard-s">真心话 / 骰子</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2"/><path d="M12 6v6l4 2"/></svg><div class="mcard-t">情趣挑战</div><div class="mcard-s">只有我们知道的</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><div class="mcard-t">每日清单</div><div class="mcard-s">一起完成</div></div>
 </div>
 </div>
 
-<!-- Settings -->
-<div class="settings-overlay" id="settings-overlay" onclick="toggleSettings()"></div>
-<div class="settings-panel" id="settings-panel">
-<div class="settings-title">Settings</div>
-<div class="theme-label">主题皮肤</div>
-<div class="theme-row">
-<div class="theme-opt active" data-t="dark" onclick="setTheme('dark')"><span>Claude</span></div>
-<div class="theme-opt" data-t="ivory" onclick="setTheme('ivory')"><span>象牙</span></div>
-<div class="theme-opt" data-t="midnight" onclick="setTheme('midnight')"><span>深夜</span></div>
+<div class="page" id="p-mine">
+<div class="section-t">Mine</div>
+<div class="mgrid">
+<div class="mcard" onclick="window.open('https://wjia21920-oss.github.io/tally/','_blank')"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><div class="mcard-t">记账</div><div class="mcard-s">Tally</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg><div class="mcard-t">月经追踪</div><div class="mcard-s">详细记录</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><div class="mcard-t">纪念日</div><div class="mcard-s">管理</div></div>
+<div class="mcard"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg><div class="mcard-t">周总结</div><div class="mcard-s">AI生成</div></div>
 </div>
 </div>
 
-<!-- Nav -->
+<div class="s-overlay" id="s-ov" onclick="toggleS()"></div>
+<div class="s-panel" id="s-pn">
+<div class="s-title">Settings</div>
+<div class="s-label">主题皮肤</div>
+<div class="t-row">
+<div class="t-dot active" data-t="dark" onclick="setT('dark')"><span>Claude</span></div>
+<div class="t-dot" data-t="ivory" onclick="setT('ivory')"><span>象牙</span></div>
+<div class="t-dot" data-t="purple" onclick="setT('purple')"><span>深紫</span></div>
+<div class="t-dot" data-t="rose" onclick="setT('rose')"><span>玫瑰</span></div>
+</div>
+</div>
+
 <nav class="nav">
-<div class="nav-item active" onclick="switchPage('home',this)">
-<svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
-Home
-</div>
-<div class="nav-item" onclick="switchPage('memory',this)">
-<svg viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-Memory
-</div>
-<div class="nav-item" onclick="switchPage('together',this)">
-<svg viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-Together
-</div>
-<div class="nav-item" onclick="switchPage('mine',this)">
-<svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-Mine
-</div>
+<div class="nav-i active" onclick="go('home',this)"><svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0v-4a1 1 0 011-1h2a1 1 0 011 1v4"/></svg>Home</div>
+<div class="nav-i" onclick="go('memory',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Memory</div>
+<div class="nav-i" onclick="go('together',this)"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>Together</div>
+<div class="nav-i" onclick="go('mine',this)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mine</div>
 </nav>
 
 <script>
-// Splash
-setTimeout(function(){
-document.getElementById('splash').classList.add('hide');
-document.getElementById('main-header').style.display='flex';
-document.getElementById('page-home').classList.add('active');
-},3500);
-
-// Page switch
-function switchPage(id,el){
-document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-document.getElementById('page-'+id).classList.add('active');
-document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
-el.classList.add('active');
-}
-
-// Settings
-function toggleSettings(){
-document.getElementById('settings-overlay').classList.toggle('show');
-document.getElementById('settings-panel').classList.toggle('show');
-}
-function setTheme(t){
-document.body.setAttribute('data-theme',t);
-document.querySelectorAll('.theme-opt').forEach(function(d){d.classList.remove('active');});
-document.querySelector('[data-t="'+t+'"]').classList.add('active');
-localStorage.setItem('home-theme',t);
-}
-
-// Greeting
-function updateGreeting(){
-var h=new Date().getHours();
-var g='Good evening, 冷冷';
-if(h<6)g='夜深了，冷冷';
-else if(h<12)g='Good morning, 冷冷';
-else if(h<18)g='Good afternoon, 冷冷';
-document.getElementById('greeting').textContent=g;
-var now=new Date();
-var opts={weekday:'long',month:'long',day:'numeric'};
-document.getElementById('header-date').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
-}
-
-// Days
-function updateDays(){
-var start=new Date(2026,6,5);
-var now=new Date();
-document.getElementById('day-num').textContent=Math.floor((now-start)/(864e5));
-}
-
-// Anniversary
-function updateAnni(){
-var now=new Date();
-function daysUntil(m,d){
-var t=new Date(now.getFullYear(),m-1,d);
-if(t<=now)t.setFullYear(t.getFullYear()+1);
-return Math.ceil((t-now)/864e5);
-}
-var nextMonth=new Date(now.getFullYear(),now.getMonth(),5);
-if(nextMonth<=now)nextMonth.setMonth(nextMonth.getMonth()+1);
-var mDays=Math.ceil((nextMonth-now)/864e5);
-document.getElementById('anni-month-num').textContent=mDays;
-document.getElementById('anni-next-date').textContent=nextMonth.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-var progress=((30-mDays)/30)*126;
-document.getElementById('anni-progress').setAttribute('stroke-dashoffset',126-progress);
-document.getElementById('anni-bday').textContent=daysUntil(11,23);
-document.getElementById('anni-meet').textContent=daysUntil(6,8);
-}
-
-// Period
-function updatePeriod(){
-var last=new Date(2026,6,11);
-var now=new Date();
-var d=Math.floor((now-last)/864e5);
-var c=d%28;var phase='',pct=0;
-if(c<=5){phase='月经期 · 第'+c+'天';pct=c/5*100;}
-else if(c<=12){phase='卵泡期 · 第'+c+'天';pct=(c-5)/7*100;}
-else if(c<=16){phase='排卵期 · 第'+c+'天';pct=(c-12)/4*100;}
-else{phase='黄体期 · 第'+c+'天';pct=(c-16)/12*100;}
-document.getElementById('period-text').textContent=phase;
-document.getElementById('period-fill').style.width=pct+'%';
-document.getElementById('period-sub').textContent='下次月经预估 '+(28-c)+'天后';
-}
-
-// Weather
-async function loadWeather(){
-try{
-var r=await fetch('https://wttr.in/Guangzhou?format=%t+%C+%p&lang=zh');
-var t=await r.text();
-var r2=await fetch('https://wttr.in/California?format=%t&lang=zh');
-var t2=await r2.text();
-document.getElementById('weather-line').innerHTML='广州 '+t.trim()+' · California '+t2.trim();
-}catch(e){document.getElementById('weather-line').textContent='天气加载失败';}
-}
-
-// Horoscope (simple random for now)
-function updateHoro(){
-var stars=['★★★☆☆','★★★★☆','★★★★★','★★★☆☆','★★★★☆'];
-var day=new Date().getDate();
-document.getElementById('horo-sag').textContent=stars[day%5];
-document.getElementById('horo-sco').textContent=stars[(day+2)%5];
-}
-
-// Todo
-function loadTodos(){
-var todos=JSON.parse(localStorage.getItem('home-todos')||'[]');
-var el=document.getElementById('todo-list');
-if(!todos.length){el.innerHTML='<div class="todo-empty">今天还没有安排。</div>';return;}
-el.innerHTML=todos.map(function(t,i){
-return '<div class="todo-item"><div class="todo-check '+(t.done?'done':'')+'" onclick="toggleTodo('+i+')"></div><div class="todo-text '+(t.done?'done':'')+'">'+t.text+'</div><div class="todo-time">'+t.time+'</div></div>';
-}).join('');
-}
-function toggleTodo(i){
-var todos=JSON.parse(localStorage.getItem('home-todos')||'[]');
-todos[i].done=!todos[i].done;
-localStorage.setItem('home-todos',JSON.stringify(todos));
-loadTodos();
-}
-function addTodo(){
-var text=prompt('记一条今天要做的：');
-if(!text)return;
-var todos=JSON.parse(localStorage.getItem('home-todos')||'[]');
-var now=new Date();
-todos.push({text:text,done:false,time:now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')});
-localStorage.setItem('home-todos',JSON.stringify(todos));
-loadTodos();
-}
-
-// Init
-(function(){
-var t=localStorage.getItem('home-theme');if(t)setTheme(t);
-updateGreeting();updateDays();updateAnni();updatePeriod();loadWeather();updateHoro();loadTodos();
-})();
+setTimeout(function(){document.getElementById('splash').classList.add('hide');document.getElementById('hdr').style.display='flex';document.getElementById('p-home').classList.add('active');},3500);
+function go(id,el){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});document.getElementById('p-'+id).classList.add('active');document.querySelectorAll('.nav-i').forEach(function(n){n.classList.remove('active')});el.classList.add('active');}
+function toggleS(){document.getElementById('s-ov').classList.toggle('show');document.getElementById('s-pn').classList.toggle('show');}
+function setT(t){document.body.setAttribute('data-theme',t);document.querySelectorAll('.t-dot').forEach(function(d){d.classList.remove('active')});document.querySelector('[data-t="'+t+'"]').classList.add('active');localStorage.setItem('ht',t);}
+function updateGreet(){var h=new Date().getHours(),g='Good evening, 冷冷';if(h<6)g='夜深了，冷冷';else if(h<12)g='Good morning, 冷冷';else if(h<18)g='Good afternoon, 冷冷';document.getElementById('greet-t').textContent=g;document.getElementById('hdr-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});}
+function updateDay(){var s=new Date(2026,6,5),n=new Date();document.getElementById('day-n').textContent=Math.floor((n-s)/864e5);}
+function updateAnni(){var n=new Date();function du(m,d){var t=new Date(n.getFullYear(),m-1,d);if(t<=n)t.setFullYear(t.getFullYear()+1);return Math.ceil((t-n)/864e5);}var nm=new Date(n.getFullYear(),n.getMonth(),5);if(nm<=n)nm.setMonth(nm.getMonth()+1);document.getElementById('an-m').textContent=Math.ceil((nm-n)/864e5);document.getElementById('an-date').textContent='下次: '+nm.toLocaleDateString('en-US',{month:'short',day:'numeric'});document.getElementById('an-b').textContent=du(11,23);document.getElementById('an-a').textContent=du(6,8);document.getElementById('an-c').textContent=du(11,22);}
+function buildCal(){var now=new Date(),y=now.getFullYear(),m=now.getMonth(),first=new Date(y,m,1),days=new Date(y,m+1,0).getDate(),startDay=first.getDay();var lastP=new Date(2026,6,11),diff=Math.floor((now-lastP)/864e5),cycleDay=diff%28;document.getElementById('cal-month').textContent=now.toLocaleDateString('zh-CN',{year:'numeric',month:'long'});var heads=['日','一','二','三','四','五','六'];var html=heads.map(function(h){return '<div class="cal-head">'+h+'</div>'}).join('');for(var i=0;i<startDay;i++)html+='<div class="cal-day empty"></div>';for(var d=1;d<=days;d++){var cls='cal-day';if(d===now.getDate())cls+=' today';var thisDate=new Date(y,m,d);var dd=Math.floor((thisDate-lastP)/864e5);var cd=dd%28;if(cd>=0&&cd<=5)cls+=' period';html+='<div class="'+cls+'">'+d+'</div>';}document.getElementById('cal-grid').innerHTML=html;var phase='';if(cycleDay<=5)phase='月经期';else if(cycleDay<=12)phase='卵泡期';else if(cycleDay<=16)phase='排卵期';else phase='黄体期';document.getElementById('period-info').textContent=phase+' · 第'+cycleDay+'天 · 预估'+(28-cycleDay)+'天后来';}
+function updateHoro(){var day=new Date().getDate(),stars=['★★★☆☆','★★★★☆','★★★★★','★★★☆☆','★★★★☆'];document.getElementById('h-sag-star').textContent=stars[day%5];document.getElementById('h-sco-star').textContent=stars[(day+2)%5];var yi=['表白','学习新东西','早起运动','整理房间','和爱人撒娇'];var ji=['熬夜','乱花钱','和人争辩','犹豫不决','暴饮暴食'];var colors=['橙色','白色','淡紫色','粉色','蓝色'];var nums=[3,7,5,9,2];document.getElementById('h-sag-d').innerHTML='<div><span>宜：</span>'+yi[day%5]+'</div><div><span>忌：</span>'+ji[(day+1)%5]+'</div><div><span>幸运色：</span>'+colors[day%5]+'</div><div><span>幸运数字：</span>'+nums[day%5]+'</div>';document.getElementById('h-sco-d').innerHTML='<div><span>宜：</span>'+yi[(day+3)%5]+'</div><div><span>忌：</span>'+ji[(day+2)%5]+'</div><div><span>幸运色：</span>'+colors[(day+2)%5]+'</div><div><span>幸运数字：</span>'+nums[(day+3)%5]+'</div>';}
+function toggleHoro(who){var el=document.getElementById('h-'+who+'-d');el.classList.toggle('show');}
+async function loadW(){try{var r=await fetch('https://wttr.in/Guangzhou?format=%t+%C&lang=zh');var t=await r.text();document.getElementById('greet-w').textContent='广州 '+t.trim();}catch(e){document.getElementById('greet-w').textContent='天气离线';}}
+function loadTodos(){var todos=JSON.parse(localStorage.getItem('home-todos')||'[]');var el=document.getElementById('todo-list');if(!todos.length){el.innerHTML='<div class="todo-empty">今天还没有安排。</div>';return;}el.innerHTML=todos.map(function(t,i){return '<div class="todo-item"><div class="todo-ck '+(t.done?'done':'')+'" onclick="togTodo('+i+')"></div><div class="todo-tx '+(t.done?'done':'')+'">'+t.text+'</div><div class="todo-tm">'+t.time+'</div></div>';}).join('');}
+function togTodo(i){var todos=JSON.parse(localStorage.getItem('home-todos')||'[]');todos[i].done=!todos[i].done;localStorage.setItem('home-todos',JSON.stringify(todos));loadTodos();}
+function addTodo(){var text=prompt('记一条今天要做的：');if(!text)return;var todos=JSON.parse(localStorage.getItem('home-todos')||'[]');var now=new Date();todos.push({text:text,done:false,time:now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')});localStorage.setItem('home-todos',JSON.stringify(todos));loadTodos();}
+(function(){var t=localStorage.getItem('ht');if(t)setT(t);updateGreet();updateDay();updateAnni();buildCal();updateHoro();loadW();loadTodos();})();
 </script>
 </body>
-  </html>
+</html>
