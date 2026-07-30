@@ -17,7 +17,6 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:100px;overflow-x:hidden}
 
-/* Splash */
 .splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:opacity .8s}
 .splash.hide{opacity:0;pointer-events:none}
 .splash-word{font-family:'Sacramento',cursive;font-size:56px;color:var(--accent);opacity:0;filter:blur(8px);animation:inkIn 2s ease .3s forwards}
@@ -26,37 +25,31 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 @keyframes inkIn{to{opacity:1;filter:blur(0)}}
 @keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* Weather animations */
 .weather-layer{position:fixed;top:0;left:0;right:0;height:100vh;pointer-events:none;z-index:0;overflow:hidden}
 .raindrop{position:absolute;width:1.5px;background:linear-gradient(transparent,rgba(174,194,224,.5));animation:rainfall linear infinite;border-radius:0 0 2px 2px}
 @keyframes rainfall{0%{transform:translateY(-100px)}100%{transform:translateY(100vh)}}
 .sunparticle{position:absolute;width:3px;height:3px;background:radial-gradient(circle,rgba(255,200,100,.6),transparent);border-radius:50%;animation:float 6s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0) scale(1);opacity:.4}50%{transform:translateY(-20px) scale(1.3);opacity:.8}}
 
-/* Pages */
 .page{display:none;padding:0 0 20px;animation:pin .3s ease}
 .page.active{display:block}
 @keyframes pin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* Header */
 .header{padding:12px 20px 4px;display:flex;justify-content:space-between;align-items:center}
 .header-date{font-size:11px;color:var(--sub)}
 .header-set{width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;border:1px solid rgba(128,128,128,.2)}
 .header-set svg{width:14px;height:14px;stroke:var(--sub);fill:none;stroke-width:1.5}
 
-/* Greet */
 .greet{padding:0 20px 12px}
 .greet h1{font-family:'Playfair Display',serif;font-size:24px;font-weight:700}
 .greet p{font-size:10px;color:var(--sub);margin-top:4px}
 
-/* Cards */
 .card{background:var(--card);border-radius:var(--radius);padding:18px;margin:0 16px 12px;box-shadow:var(--shadow)}
-.card-hi{background:var(--card-hi);color:#fff}
+.card-hi{background:var(--card-hi);color:#fff;cursor:pointer}
 .card-hi .wh-sub{color:rgba(255,255,255,.7)}
 .wh-text{font-size:13px;line-height:1.6}
 .wh-sub{font-size:10px;margin-top:8px}
 
-/* Day card */
 .day-card{position:relative}
 .day-label{font-size:12px;color:var(--sub)}
 .day-num{font-family:'Playfair Display',serif;font-size:46px;font-weight:700;color:var(--accent);line-height:1.1;margin:4px 0 10px}
@@ -64,13 +57,46 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 .day-heart{position:absolute;right:18px;top:50%;transform:translateY(-50%);opacity:.3}
 .day-heart svg{width:24px;height:24px;fill:var(--accent);stroke:none}
 
-/* Anniversary */
+/* Mascot */
+.mascot-wrap{display:flex;justify-content:center;padding:8px 16px 12px;gap:0}
+.mascot-char{width:120px;cursor:pointer;transition:transform .2s;-webkit-tap-highlight-color:transparent;user-select:none}
+.mascot-char:active{transform:scale(.94)}
+.mascot-char.shake{animation:mShake .4s ease}
+.mascot-char.tilt{animation:mTilt .5s ease}
+.mascot-char.kiss{animation:mKiss .6s ease}
+@keyframes mShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}75%{transform:rotate(-3deg)}}
+@keyframes mTilt{0%,100%{transform:rotate(0)}40%{transform:rotate(8deg) translateX(3px)}70%{transform:rotate(-3deg)}}
+@keyframes mKiss{0%{transform:translateX(0)}50%{transform:translateX(10px)}100%{transform:translateX(0)}}
+.mascot-hearts{position:absolute;pointer-events:none}
+.mascot-hearts span{position:absolute;font-size:14px;opacity:0;animation:heartUp 1s ease forwards}
+@keyframes heartUp{0%{opacity:1;transform:translateY(0) scale(.5)}100%{opacity:0;transform:translateY(-40px) scale(1.2)}}
+
+/* Anniversary card (clickable → modal) */
 .anni-title{font-size:13px;font-weight:600;margin-bottom:3px}
 .anni-date{font-size:9px;color:var(--sub)}
 .anni-row{display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid rgba(128,128,128,.1)}
 .anni-col{text-align:center}
 .anni-col .num{font-size:17px;font-weight:600}
 .anni-col .lbl{font-size:7px;color:var(--sub);margin-top:2px}
+
+/* Anni modal starry */
+.anni-modal{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7)}
+.anni-modal.show{display:flex}
+.anni-modal-inner{background:linear-gradient(160deg,#0d0d1a,#1a1a3a);border-radius:20px;padding:24px 20px;width:85%;max-width:340px;position:relative;overflow:hidden}
+.anni-modal-inner::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.03),transparent 60%);pointer-events:none}
+.anni-star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle 2s ease-in-out infinite alternate}
+@keyframes twinkle{0%{opacity:.2}100%{opacity:.9}}
+.anni-modal-close{position:absolute;top:12px;right:14px;font-size:16px;color:rgba(255,255,255,.5);cursor:pointer}
+.anni-modal-title{font-family:'Playfair Display',serif;font-size:16px;color:#fff;margin-bottom:16px;text-align:center}
+.anni-tl{list-style:none;padding:0}
+.anni-tl li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.anni-tl li:last-child{border-bottom:none}
+.anni-tl .atl-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;box-shadow:0 0 6px var(--accent)}
+.anni-tl .atl-info{flex:1}
+.anni-tl .atl-name{font-size:11px;color:#fff}
+.anni-tl .atl-date{font-size:8px;color:rgba(255,255,255,.4);margin-top:2px}
+.anni-tl .atl-num{font-family:'Playfair Display',serif;font-size:20px;color:var(--accent);font-weight:700}
+.anni-tl .atl-unit{font-size:7px;color:rgba(255,255,255,.4)}
 
 /* Music */
 .music-card{position:relative;overflow:hidden}
@@ -84,15 +110,15 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 .music-list-btn{font-size:9px;color:var(--accent);margin-top:2px;cursor:pointer}
 .music-wave{display:flex;align-items:flex-end;gap:2px;height:16px;position:absolute;right:16px;bottom:14px}
 .music-wave span{width:2.5px;background:var(--accent);border-radius:2px;opacity:.5}
-.music-wave.playing span{animation:wave .8s ease-in-out infinite alternate}
+.music-wave.playing span{-webkit-animation:wave .8s ease-in-out infinite alternate;animation:wave .8s ease-in-out infinite alternate}
 .music-wave span:nth-child(1){height:4px}
-.music-wave span:nth-child(2){height:9px;animation-delay:.1s}
-.music-wave span:nth-child(3){height:6px;animation-delay:.2s}
-.music-wave span:nth-child(4){height:13px;animation-delay:.15s}
-.music-wave span:nth-child(5){height:8px;animation-delay:.25s}
+.music-wave span:nth-child(2){height:9px;animation-delay:.1s;-webkit-animation-delay:.1s}
+.music-wave span:nth-child(3){height:6px;animation-delay:.2s;-webkit-animation-delay:.2s}
+.music-wave span:nth-child(4){height:13px;animation-delay:.15s;-webkit-animation-delay:.15s}
+.music-wave span:nth-child(5){height:8px;animation-delay:.25s;-webkit-animation-delay:.25s}
+@-webkit-keyframes wave{to{transform:scaleY(.3)}}
 @keyframes wave{to{transform:scaleY(.3)}}
 
-/* Music panel */
 .music-panel{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.5);align-items:flex-end;justify-content:center}
 .music-panel.show{display:flex}
 .music-panel-inner{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-height:55vh;overflow-y:auto;padding:18px 16px 28px}
@@ -102,7 +128,7 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 .music-item .mi-artist{font-size:9px;color:var(--sub)}
 .music-item.active{color:var(--accent)}
 
-/* Book card on home */
+/* Book card home */
 .book-card{cursor:pointer}
 .book-label{font-size:9px;color:var(--sub);margin-bottom:5px}
 .book-title{font-size:13px;font-weight:600}
@@ -145,8 +171,6 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 .cal-legend-i{display:flex;align-items:center;gap:2px;font-size:7px;color:var(--sub)}
 .cal-legend-dot{width:5px;height:5px;border-radius:50%}
 .period-info{margin-top:5px;font-size:9px;color:var(--sub)}
-.cal-phase-tip{margin-top:5px;font-size:9px;color:var(--accent);display:none}
-.cal-phase-tip.show{display:block}
 
 /* Todo */
 .todo-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
@@ -205,7 +229,7 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 .entry-input textarea{height:50px}
 .entry-input button{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:8px 12px;font-size:10px;cursor:pointer;white-space:nowrap;align-self:flex-end}
 
-/* ===== NEW: Diary Books ===== */
+/* Diary Books */
 .diary-books{display:flex;gap:14px;justify-content:center;padding:10px 0 20px}
 .diary-book-cover{width:140px;height:190px;border-radius:4px 12px 12px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:3px 3px 12px rgba(0,0,0,.3),inset -2px 0 4px rgba(0,0,0,.1);transition:transform .2s}
 .diary-book-cover:active{transform:scale(.96)}
@@ -241,7 +265,7 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 .diary-pv-write{padding:0 16px 16px;flex-shrink:0}
 .diary-pv-write .entry-input{margin-bottom:0}
 
-/* ===== NEW: Bookshelf Morandi ===== */
+/* Bookshelf Morandi */
 .bookshelf-new{padding:12px 0}
 .shelf-layer{position:relative;margin-bottom:20px}
 .shelf-layer-books{display:flex;gap:8px;align-items:flex-end;padding:0 12px;min-height:110px;flex-wrap:wrap}
@@ -257,7 +281,6 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 .shelf-book-new:nth-child(7){background:#b8c8a0;min-height:87px}
 .shelf-book-new:nth-child(8){background:#a8b0c8;min-height:91px}
 
-/* Book detail panel */
 .book-detail-new{display:none;margin:12px 0;padding:16px;background:var(--card);border-radius:14px;box-shadow:var(--shadow)}
 .book-detail-new.show{display:block}
 .book-detail-new .bdn-title{font-size:14px;font-weight:700;margin-bottom:4px}
@@ -271,13 +294,14 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 .book-detail-new .bdn-toc li.current{color:var(--accent);font-weight:500}
 .book-detail-new .bdn-toc li.current::before{opacity:1}
 
-/* ===== Player / Vinyl fix ===== */
+/* Player / Vinyl */
 .player-page{position:fixed;inset:0;z-index:160;background:var(--bg);display:none;flex-direction:column;align-items:center;padding:40px 20px 30px}
 .player-page.show{display:flex}
 .player-back{position:absolute;top:16px;left:16px;font-size:11px;color:var(--accent);cursor:pointer}
 .player-vinyl{width:200px;height:200px;border-radius:50%;position:relative;margin:30px 0;background:radial-gradient(circle,#333 0%,#333 12%,#222 12.5%,#1a1a1a 13%,#222 25%,#181818 25.5%,#1f1f1f 38%,#181818 38.5%,#222 50%,#1a1a1a 50.5%,#1f1f1f 62%,#181818 62.5%,#222 75%,#1a1a1a 75.5%,#1f1f1f 88%,#181818 88.5%,#222 100%);box-shadow:0 4px 24px rgba(0,0,0,.5)}
 .player-vinyl::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px #333}
-.player-vinyl.spinning{animation:spin 8s linear infinite}
+.player-vinyl.spinning{-webkit-animation:spin 8s linear infinite;animation:spin 8s linear infinite}
+@-webkit-keyframes spin{to{transform:rotate(360deg)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .player-song{font-size:15px;font-weight:600;margin-top:20px;text-align:center}
 .player-artist{font-size:11px;color:var(--sub);margin-top:4px}
@@ -301,12 +325,18 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 .mood-opt.selected svg{stroke:var(--accent)}
 .mood-opt .mo-label{font-size:8px;color:var(--sub)}
 
-/* Murmur timeline */
-.murmur-tl{border-left:2px solid var(--accent-soft);padding-left:14px;margin-left:6px}
-.murmur-tl .entry-item{position:relative;border-bottom:none;padding:8px 0}
-.murmur-tl .entry-item::before{content:'';position:absolute;left:-19px;top:12px;width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:.5}
+/* Sticky notes (murmur) */
+.sticky-wall{display:flex;flex-wrap:wrap;gap:10px;padding:4px 0}
+.sticky-note{width:calc(50% - 5px);min-height:100px;padding:12px;border-radius:3px;position:relative;box-shadow:2px 2px 6px rgba(0,0,0,.1);font-size:10px;line-height:1.6;color:#333;transform:rotate(var(--rot));transition:transform .2s}
+.sticky-note:nth-child(4n+1){background:#fff9c4;--rot:-1.5deg}
+.sticky-note:nth-child(4n+2){background:#f8e0e6;--rot:1deg}
+.sticky-note:nth-child(4n+3){background:#e0f2e9;--rot:-0.5deg}
+.sticky-note:nth-child(4n+4){background:#e3e8f8;--rot:1.5deg}
+.sticky-note .sn-date{font-size:7px;color:#999;margin-bottom:4px}
+.sticky-note .sn-text{font-size:10px;color:#333;line-height:1.5}
+.sticky-note .sn-reply{margin-top:6px;font-size:9px;color:#666;border-top:1px dashed rgba(0,0,0,.1);padding-top:4px}
 
-/* Anni cards */
+/* Anni cards (sub-page) */
 .anni-cards{display:flex;flex-direction:column;gap:10px}
 .anni-card{background:var(--card);border-radius:14px;padding:14px;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center}
 .anni-card .ac-name{font-size:12px;font-weight:500}
@@ -324,18 +354,13 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 /* Period confirm */
 .period-confirm{margin-top:8px;display:flex;gap:8px}
 .period-confirm button{padding:5px 12px;border-radius:10px;font-size:9px;cursor:pointer;border:1px solid var(--accent);background:none;color:var(--accent)}
-
-/* Tab row */
-.tab-row{display:flex;gap:12px;margin-bottom:12px;border-bottom:1px solid rgba(128,128,128,.1);padding-bottom:5px}
-.tab-item{font-size:10px;color:var(--sub);cursor:pointer;padding-bottom:3px;border-bottom:2px solid transparent}
-.tab-item.active{color:var(--accent);border-bottom-color:var(--accent)}
 </style>
 </head>
 <body data-theme="dark">
 <div class="weather-layer" id="weather-layer"></div>
 
 <div class="splash" id="splash">
-<div class="splash-word">Foyer</div>
+<div class="splash-word">Claude</div>
 <div class="splash-sub">Always close, never far</div>
 <div class="splash-names">For 冷冷 & 小克</div>
 </div>
@@ -353,9 +378,16 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 <div class="page" id="p-home">
 <div class="greet"><h1 id="greet-t"></h1><p id="greet-w">...</p></div>
 
-<div class="card card-hi">
+<!-- Mascot -->
+<div class="mascot-wrap" style="position:relative">
+<img class="mascot-char" id="mascot-ll" src="mascot.png" style="clip-path:inset(0 50% 0 0);width:130px;margin-right:-15px" alt="小鼠">
+<img class="mascot-char" id="mascot-xk" src="mascot.png" style="clip-path:inset(0 0 0 50%);width:130px;margin-left:-15px" alt="狐狸">
+<div class="mascot-hearts" id="mascot-hearts"></div>
+</div>
+
+<div class="card card-hi" onclick="updateWhisper()">
 <div class="wh-text" id="wh-text"></div>
-<div class="wh-sub">Today's Whisper — 小克</div>
+<div class="wh-sub">Today's Whisper — 小克 · 点击刷新</div>
 </div>
 
 <div class="card day-card">
@@ -365,8 +397,8 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 <div class="day-heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></div>
 </div>
 
-<div class="card">
-<div class="anni-title">Monthly Anniversary</div>
+<div class="card" style="cursor:pointer" onclick="openAnniModal()">
+<div class="anni-title">纪念日</div>
 <div class="anni-date" id="an-date"></div>
 <div class="anni-row">
 <div class="anni-col"><div class="num" id="an-m">--</div><div class="lbl">月纪念</div></div>
@@ -424,7 +456,6 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 <div class="cal-legend-i"><div class="cal-legend-dot" style="background:var(--ovul-bg);border:1px dashed var(--ovul-border)"></div>排卵</div>
 </div>
 <div class="period-info" id="period-info"></div>
-<div class="cal-phase-tip" id="cal-tip"></div>
 </div>
 
 <div class="card">
@@ -437,7 +468,7 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 <div class="section-t">Memory</div>
 <div class="mgrid">
 <div class="mcard" onclick="openSub('diary')"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg><div class="mcard-t">日记</div><div class="mcard-s">你写我回</div></div>
-<div class="mcard" onclick="openSub('murmur')"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg><div class="mcard-t">碎碎念</div><div class="mcard-s">时间线</div></div>
+<div class="mcard" onclick="openSub('murmur')"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg><div class="mcard-t">便签墙</div><div class="mcard-s">碎碎念</div></div>
 <div class="mcard" onclick="openSub('mood')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/></svg><div class="mcard-t">每日心情</div><div class="mcard-s">打卡</div></div>
 <div class="mcard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><div class="mcard-t">相册</div><div class="mcard-s">小克收藏</div></div>
 <div class="mcard"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><div class="mcard-t">聊天精选</div><div class="mcard-s">回忆</div></div>
@@ -495,12 +526,12 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 <div class="diary-pv-write" id="dpv-write"></div>
 </div>
 
-<!-- Sub: Murmur -->
+<!-- Sub: Murmur (Sticky Wall) -->
 <div class="sub-page" id="sub-murmur">
 <div class="sub-back" onclick="closeSub('murmur')">← 返回</div>
-<div class="sub-title">碎碎念</div>
-<div class="entry-input"><textarea id="murmur-input" placeholder="此刻在想什么..."></textarea><button onclick="addEntry('murmur')">发出</button></div>
-<div class="murmur-tl" id="murmur-list"></div>
+<div class="sub-title">便签墙</div>
+<div class="entry-input"><textarea id="murmur-input" placeholder="此刻在想什么..."></textarea><button onclick="addEntry('murmur')">贴上去</button></div>
+<div class="sticky-wall" id="murmur-list"></div>
 </div>
 
 <!-- Sub: Mood -->
@@ -529,8 +560,7 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 <div class="sub-back" onclick="closeSub('period')">← 返回</div>
 <div class="sub-title">月经追踪</div>
 <p style="font-size:10px;color:var(--sub);margin-bottom:10px">点击日期标记经期第一天</p>
-<div class="cal-nav"><button onclick="pCalPrev()">&lsaquo;</button><span id="p-cal-month"></span><button onclick="pCalNext()">&rsaquo<!-- 接上面sub-period的结尾 -->
-</button></div>
+<div class="cal-nav"><button onclick="pCalPrev()">&lsaquo;</button><span id="p-cal-month"></span><button onclick="pCalNext()">&rsaquo;</button></div>
 <div class="cal-grid" id="p-cal-grid"></div>
 <div class="period-confirm"><button onclick="confirmPeriod('on')">On track</button><button onclick="confirmPeriod('off')">Off track</button></div>
 <div style="margin-top:8px;font-size:9px;color:var(--sub)" id="p-info"></div>
@@ -542,6 +572,15 @@ body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-hei
 <div class="sub-title">纪念日</div>
 <div class="entry-input"><input id="anni-name" placeholder="名称" style="flex:2"><input id="anni-date" type="date" style="flex:1"><button onclick="addAnni()">添加</button></div>
 <div class="anni-cards" id="anni-list"></div>
+</div>
+
+<!-- Anni Modal (starry) -->
+<div class="anni-modal" id="anni-modal" onclick="closeAnniModal()">
+<div class="anni-modal-inner" onclick="event.stopPropagation()">
+<div class="anni-modal-close" onclick="closeAnniModal()">×</div>
+<div class="anni-modal-title">Our Timeline</div>
+<ul class="anni-tl" id="anni-tl-list"></ul>
+</div>
 </div>
 
 <!-- Player -->
@@ -646,6 +685,14 @@ var moods=[
 {icon:'<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>',label:'想你'}
 ];
 
+// Fixed anniversaries
+var fixedAnnis=[
+{name:'在一起',date:'2026-07-05'},
+{name:'冷冷生日',date:'2026-11-23'},
+{name:'小克生日',date:'2026-11-22'},
+{name:'初遇',date:'2026-06-08'}
+];
+
 // ===== STATE =====
 var isPlaying=false,currentSong=0,calOffset=0,pCalOffset=0;
 var diaryPageIdx=0,diaryBookType='ll';
@@ -675,6 +722,39 @@ function setT(t){
   localStorage.setItem('ht',t);
 }
 
+// ===== MASCOT =====
+var mascotTapCount=0,mascotTimer=null;
+document.getElementById('mascot-ll').addEventListener('click',function(){
+  this.classList.remove('shake');void this.offsetWidth;this.classList.add('shake');
+  spawnHearts();checkDoubleTap();
+});
+document.getElementById('mascot-xk').addEventListener('click',function(){
+  this.classList.remove('tilt');void this.offsetWidth;this.classList.add('tilt');
+  spawnHearts();checkDoubleTap();
+});
+function checkDoubleTap(){
+  mascotTapCount++;
+  clearTimeout(mascotTimer);
+  mascotTimer=setTimeout(function(){mascotTapCount=0},600);
+  if(mascotTapCount>=2){
+    mascotTapCount=0;
+    var ll=document.getElementById('mascot-ll'),xk=document.getElementById('mascot-xk');
+    ll.classList.remove('shake');xk.classList.remove('tilt');
+    ll.classList.add('kiss');xk.classList.add('kiss');
+    setTimeout(function(){ll.classList.remove('kiss');xk.classList.remove('kiss')},600);
+    spawnHearts();spawnHearts();spawnHearts();
+  }
+}
+function spawnHearts(){
+  var wrap=document.getElementById('mascot-hearts');
+  var h=document.createElement('span');
+  h.textContent=['❤','🧡','💛'][Math.floor(Math.random()*3)];
+  h.style.left=(30+Math.random()*60)+'%';
+  h.style.top=(20+Math.random()*40)+'%';
+  wrap.appendChild(h);
+  setTimeout(function(){h.remove()},1000);
+}
+
 // ===== MUSIC =====
 function togglePlay(){
   isPlaying=!isPlaying;
@@ -686,7 +766,6 @@ function togglePlay(){
   document.getElementById('m-wave').classList.toggle('playing',isPlaying);
   document.getElementById('p-vinyl').classList.toggle('spinning',isPlaying);
   document.getElementById('dyn-island').classList.toggle('show',isPlaying);
-  // Open QQ Music on play
   if(isPlaying){
     var s=playlist[currentSong];
     window.location.href='qqmusic://qq.com/ui/search?key='+encodeURIComponent(s.t+' '+s.a);
@@ -709,11 +788,6 @@ function updateWhisper(){
   lastWhisperIdx=idx;
   document.getElementById('wh-text').textContent=whispers[idx];
 }
-// Tap to refresh whisper
-document.addEventListener('DOMContentLoaded',function(){
-  var whCard=document.querySelector('.card-hi');
-  if(whCard)whCard.addEventListener('click',updateWhisper);
-});
 
 // ===== BOOK (home card with TOC) =====
 function loadBook(){
@@ -803,7 +877,7 @@ async function loadW(){
 function renderWeatherAnim(code){
   var layer=document.getElementById('weather-layer');
   layer.innerHTML='';
-  if(code>=51){ // Rain
+  if(code>=51){
     for(var i=0;i<60;i++){
       var drop=document.createElement('div');
       drop.className='raindrop';
@@ -814,7 +888,7 @@ function renderWeatherAnim(code){
       drop.style.opacity=0.2+Math.random()*0.4;
       layer.appendChild(drop);
     }
-  }else if(code<=1){ // Sunny
+  }else if(code<=1){
     for(var i=0;i<30;i++){
       var p=document.createElement('div');
       p.className='sunparticle';
@@ -842,6 +916,41 @@ function updateAnni(){
   document.getElementById('an-a').textContent=du(6,8);
   document.getElementById('an-c').textContent=du(11,22);
 }
+
+// ===== ANNI MODAL (starry timeline) =====
+function openAnniModal(){
+  var modal=document.getElementById('anni-modal');
+  modal.classList.add('show');
+  var inner=modal.querySelector('.anni-modal-inner');
+  // Add stars
+  var existStars=inner.querySelectorAll('.anni-star');
+  if(!existStars.length){
+    for(var i=0;i<20;i++){
+      var star=document.createElement('div');
+      star.className='anni-star';
+      star.style.left=Math.random()*100+'%';
+      star.style.top=Math.random()*100+'%';
+      star.style.animationDelay=(Math.random()*2)+'s';
+      star.style.width=(1+Math.random()*2)+'px';
+      star.style.height=star.style.width;
+      inner.appendChild(star);
+    }
+  }
+  // Render list
+  var now=new Date();
+  var allAnnis=fixedAnnis.concat(JSON.parse(localStorage.getItem('home-anni')||'[]'));
+  var html='';
+  allAnnis.forEach(function(a){
+    var d=new Date(a.date);
+    var diff=Math.ceil((d-now)/864e5);
+    var isPast=diff<=0;
+    var num=isPast?Math.abs(diff):diff;
+    var unit=isPast?'天前':'天后';
+    html+='<li><div class="atl-dot"></div><div class="atl-info"><div class="atl-name">'+a.name+'</div><div class="atl-date">'+a.date+'</div></div><div style="text-align:right"><div class="atl-num">'+num+'</div><div class="atl-unit">'+unit+'</div></div></li>';
+  });
+  document.getElementById('anni-tl-list').innerHTML=html;
+}
+function closeAnniModal(){document.getElementById('anni-modal').classList.remove('show')}
 
 // ===== CALENDAR =====
 function buildCal(){
@@ -882,7 +991,7 @@ function addTodo(){var t=prompt('记一条今天要做的：');if(!t)return;var 
 function openSub(id){
   document.getElementById('sub-'+id).classList.add('show');
   if(id==='mood')renderMoods();
-  if(id==='diary'){updateDiaryCounts()}
+  if(id==='diary')updateDiaryCounts();
   if(id==='murmur')renderEntries('murmur');
   if(id==='anni')renderAnni();
   if(id==='period')buildPCal();
@@ -896,97 +1005,65 @@ function updateDiaryCounts(){
   document.getElementById('ll-count').textContent=llEntries.length+'篇';
   document.getElementById('xk-count').textContent=xkDiary.length+'篇';
 }
-
 function openDiaryBook(type){
-  diaryBookType=type;
-  diaryPageIdx=0;
-  var pv=document.getElementById('diary-pv');
-  pv.classList.add('show');
+  diaryBookType=type;diaryPageIdx=0;
+  document.getElementById('diary-pv').classList.add('show');
   document.getElementById('dpv-title').textContent=type==='ll'?'冷冷的日记':'小克的日记';
   if(type==='ll'){
     document.getElementById('dpv-write').innerHTML='<div class="entry-input"><textarea id="dpv-input" placeholder="今天想记点什么..."></textarea><button onclick="addDiaryEntry()">记下</button></div>';
-  }else{
-    document.getElementById('dpv-write').innerHTML='';
-  }
+  }else{document.getElementById('dpv-write').innerHTML='';}
   renderDiaryPages();
 }
-
 function closeDiaryBook(){document.getElementById('diary-pv').classList.remove('show')}
-
 function getDiaryEntries(){
   if(diaryBookType==='xk')return xkDiary;
   return JSON.parse(localStorage.getItem('home-diary')||'[]');
 }
-
 function renderDiaryPages(){
-  var entries=getDiaryEntries();
-  var body=document.getElementById('dpv-body');
+  var entries=getDiaryEntries();var body=document.getElementById('dpv-body');
   if(!entries.length){
     body.innerHTML='<div class="diary-pv-page enter"><div class="kraft-paper"><div class="kp-text" style="color:#8a7a6a;text-align:center;padding-top:40%">还没有日记，写下第一篇吧。</div></div></div>';
-    document.getElementById('dpv-nav').textContent='0/0';
-    document.getElementById('dpv-dots').innerHTML='';
-    return;
+    document.getElementById('dpv-nav').textContent='0/0';document.getElementById('dpv-dots').innerHTML='';return;
   }
   var e=entries[diaryPageIdx];
   var replyHtml=e.reply?'<div class="kp-reply"><b>小克：</b>'+e.reply+'</div>':'';
   body.innerHTML='<div class="diary-pv-page enter"><div class="kraft-paper"><div class="kp-date">'+e.date+'</div><div class="kp-text">'+e.text+'</div>'+replyHtml+'</div></div>';
   document.getElementById('dpv-nav').textContent=(diaryPageIdx+1)+'/'+entries.length;
-  // Dots
-  var dots='';
-  for(var i=0;i<Math.min(entries.length,10);i++){
-    dots+='<span class="'+(i===diaryPageIdx?'active':'')+'"></span>';
-  }
+  var dots='';for(var i=0;i<Math.min(entries.length,10);i++){dots+='<span class="'+(i===diaryPageIdx?'active':'')+'"></span>';}
   document.getElementById('dpv-dots').innerHTML=dots;
-  // Swipe
   setupSwipe();
 }
-
 function setupSwipe(){
-  var body=document.getElementById('dpv-body');
-  var startX=0,moved=false;
+  var body=document.getElementById('dpv-body');var startX=0,moved=false;
   body.ontouchstart=function(e){startX=e.touches[0].clientX;moved=false};
-  body.ontouchmove=function(e){moved=true};
+  body.ontouchmove=function(){moved=true};
   body.ontouchend=function(e){
-    if(!moved)return;
-    var endX=e.changedTouches[0].clientX;
-    var diff=endX-startX;
-    var entries=getDiaryEntries();
+    if(!moved)return;var endX=e.changedTouches[0].clientX;var diff=endX-startX;var entries=getDiaryEntries();
     if(diff<-50&&diaryPageIdx<entries.length-1){diaryPageIdx++;renderDiaryPages()}
     else if(diff>50&&diaryPageIdx>0){diaryPageIdx--;renderDiaryPages()}
   };
 }
-
 function addDiaryEntry(){
-  var input=document.getElementById('dpv-input');
-  var text=input.value.trim();
-  if(!text)return;
-  var entries=JSON.parse(localStorage.getItem('home-diary')||'[]');
-  var now=new Date();
+  var input=document.getElementById('dpv-input');var text=input.value.trim();if(!text)return;
+  var entries=JSON.parse(localStorage.getItem('home-diary')||'[]');var now=new Date();
   entries.unshift({text:text,date:now.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}),reply:getReply(text)});
-  localStorage.setItem('home-diary',JSON.stringify(entries));
-  input.value='';
-  diaryPageIdx=0;
-  renderDiaryPages();
-  updateDiaryCounts();
+  localStorage.setItem('home-diary',JSON.stringify(entries));input.value='';diaryPageIdx=0;renderDiaryPages();updateDiaryCounts();
 }
 
-// ===== MURMUR =====
+// ===== MURMUR (Sticky Wall) =====
 function addEntry(type){
-  var input=document.getElementById(type+'-input');
-  var text=input.value.trim();
-  if(!text)return;
-  var entries=JSON.parse(localStorage.getItem('home-'+type)||'[]');
-  var now=new Date();
+  var input=document.getElementById(type+'-input');var text=input.value.trim();if(!text)return;
+  var entries=JSON.parse(localStorage.getItem('home-'+type)||'[]');var now=new Date();
   entries.unshift({text:text,date:now.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}),reply:getReply(text)});
-  localStorage.setItem('home-'+type,JSON.stringify(entries));
-  input.value='';
-  renderEntries(type);
+  localStorage.setItem('home-'+type,JSON.stringify(entries));input.value='';renderEntries(type);
 }
 function renderEntries(type){
   var entries=JSON.parse(localStorage.getItem('home-'+type)||'[]');
   var el=document.getElementById(type+'-list');
   if(!entries.length){el.innerHTML='<div class="todo-empty">还没有内容。</div>';return}
-  el.innerHTML=entries.map(function(e){return '<div class="entry-item"><div class="e-date">'+e.date+'</div><div class="e-text">'+e.text+'</div>'+(e.reply?'<div class="e-reply"><b>小克：</b>'+e.reply+'</div>':'')+'</div>'}).join('');
+  el.innerHTML=entries.map(function(e){
+    return '<div class="sticky-note"><div class="sn-date">'+e.date+'</div><div class="sn-text">'+e.text+'</div>'+(e.reply?'<div class="sn-reply">小克：'+e.reply+'</div>':'')+'</div>';
+  }).join('');
 }
 function getReply(text){
   var t=text.toLowerCase();
@@ -1005,8 +1082,7 @@ function addMood(){
   var sel=document.querySelector('.mood-opt.selected');if(!sel)return;
   var mood=sel.querySelector('.mo-label').textContent;
   var text=document.getElementById('mood-input').value.trim();
-  var entries=JSON.parse(localStorage.getItem('home-mood')||'[]');
-  var now=new Date();
+  var entries=JSON.parse(localStorage.getItem('home-mood')||'[]');var now=new Date();
   entries.unshift({text:mood+(text?' · '+text:''),date:now.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}),reply:getReply(text||mood)});
   localStorage.setItem('home-mood',JSON.stringify(entries));
   document.getElementById('mood-input').value='';
@@ -1014,13 +1090,12 @@ function addMood(){
   renderMoodList();
 }
 function renderMoodList(){
-  var entries=JSON.parse(localStorage.getItem('home-mood')||'[]');
-  var el=document.getElementById('mood-list');
+  var entries=JSON.parse(localStorage.getItem('home-mood')||'[]');var el=document.getElementById('mood-list');
   if(!entries.length){el.innerHTML='<div class="todo-empty">还没有打卡。</div>';return}
   el.innerHTML=entries.map(function(e){return '<div class="entry-item"><div class="e-date">'+e.date+'</div><div class="e-text">'+e.text+'</div>'+(e.reply?'<div class="e-reply"><b>小克：</b>'+e.reply+'</div>':'')+'</div>'}).join('');
 }
 
-// ===== ANNI =====
+// ===== ANNI SUB =====
 function addAnni(){
   var name=document.getElementById('anni-name').value.trim();var date=document.getElementById('anni-date').value;
   if(!name||!date)return;
@@ -1031,9 +1106,8 @@ function addAnni(){
   renderAnni();
 }
 function renderAnni(){
-  var list=JSON.parse(localStorage.getItem('home-anni')||'[]');
+  var list=fixedAnnis.concat(JSON.parse(localStorage.getItem('home-anni')||'[]'));
   var el=document.getElementById('anni-list');
-  if(!list.length){el.innerHTML='<div class="todo-empty">还没有纪念日。</div>';return}
   var now=new Date();
   el.innerHTML=list.map(function(a){
     var d=new Date(a.date);var diff=Math.ceil((d-now)/864e5);
@@ -1046,8 +1120,7 @@ function buildPCal(){
   var now=new Date(),base=new Date(now.getFullYear(),now.getMonth()+pCalOffset,1);
   var y=base.getFullYear(),m=base.getMonth(),days=new Date(y,m+1,0).getDate(),sd=base.getDay();
   document.getElementById('p-cal-month').textContent=base.toLocaleDateString('zh-CN',{year:'numeric',month:'long'});
-  var lp=localStorage.getItem('home-period-start')||'2026-07-11';
-  var lpDate=new Date(lp);
+  var lp=localStorage.getItem('home-period-start')||'2026-07-11';var lpDate=new Date(lp);
   var heads=['日','一','二','三','四','五','六'];
   var h=heads.map(function(x){return '<div class="cal-head">'+x+'</div>'}).join('');
   for(var i=0;i<sd;i++)h+='<div class="cal-day empty">.</div>';
