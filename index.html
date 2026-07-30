@@ -372,7 +372,7 @@ function prevSong(){currentSong=(currentSong-1+playlist.length)%playlist.length;
 function nextSong(){currentSong=(currentSong+1)%playlist.length;updateSongUI();renderMList()}
 function updateSongUI(){var s=playlist[currentSong];document.getElementById('m-title').textContent=s.t+' - '+s.a;document.getElementById('p-song').textContent=s.t;document.getElementById('p-artist').textContent=s.a;document.getElementById('di-title').textContent=s.t+' - '+s.a}
 function renderMList(){var el=document.getElementById('m-list');el.innerHTML=playlist.map(function(s,i){return'<div class="music-item'+(i===currentSong?' active':'')+'" onclick="selectSong('+i+')"><div>'+s.t+'</div><div class="mi-artist">'+s.a+'</div></div>'}).join('')}
-function openPlayer(){document.getElementById('playerfunction openPlayer(){document.getElementById('player-page').classList.add('show')}
+function openPlayer(){document.getElementById('player-page').classList.add('show')}
 function closePlayer(){document.getElementById('player-page').classList.remove('show')}
 // WHISPER
 var lastWhisperIdx=-1;function updateWhisper(){var idx=Math.floor(Math.random()*whispers.length);while(idx===lastWhisperIdx&&whispers.length>1)idx=Math.floor(Math.random()*whispers.length);lastWhisperIdx=idx;document.getElementById('wh-text').textContent=whispers[idx]}
